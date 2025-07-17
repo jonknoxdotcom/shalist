@@ -1,13 +1,13 @@
 package main
 
+// in-memory version
+
 import (
-	// "bufio"
-	// "encoding/json"
 	"bufio"
 	"encoding/json"
 	"fmt"
 	"os"
-	filepath "path"
+	"path"
 )
 
 func reload(file *os.File) {
@@ -30,16 +30,42 @@ func reload(file *os.File) {
 	fmt.Println()
 }
 
-// broken
-func GetTreeSize(path string) (int64, error) {
-	entries, err := os.ReadDir(path)
+func GetTreeSize(startpath string) (int64, error) {
+	entries, err := os.ReadDir(startpath)
 	if err != nil {
 		return 0, err
 	}
 	var total int64
 	for _, entry := range entries {
 		if entry.IsDir() {
-			size, err := GetTreeSize(filepath.Join(path, entry.Name()))
+			size, err := GetTreeSize(path.Join(startpath, entry.Name()))
+			if err != nil {
+				return 0, err
+			}
+			total += size
+		} else {
+			info, err := entry.Info()
+			if err != nil {
+				return 0, err
+			}
+			total += info.Size()
+		}
+	}
+	return total, nil
+}
+
+func WalkTree(startpath string) (int64, error) {
+	entries, err := os.ReadDir(startpath)
+	if err != nil {
+		return 0, err
+	}
+	var total int64
+	for index, entry := range entries {
+		if !entry.IsDir() {
+			fmt.Println(index, path.Join(startpath, entry.Name()))
+		}
+		if entry.IsDir() {
+			size, err := WalkTree(path.Join(startpath, entry.Name()))
 			if err != nil {
 				return 0, err
 			}
@@ -77,7 +103,7 @@ func main() {
 	}
 
 	// Estimate size
-	size, _ := GetTreeSize(".")
+	size, _ := WalkTree(".")
 	fmt.Println(size)
 
 	// This directory reader uses the new os.ReadDir (req 1.16)
