@@ -1,2 +1,2 @@
 # shalist
-SHA256 file manager
+SHA256 file manager *WIP*
