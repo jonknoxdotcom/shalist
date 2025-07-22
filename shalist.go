@@ -77,28 +77,44 @@ func GetSha256OfFile(fn string) ([]byte, error) {
 	return h.Sum(nil), nil
 }
 
+func abort(rc int, reason string) {
+	fmt.Println(reason)
+	os.Exit(rc)
+}
+
 func WalkTree(startpath string) (int64, error) {
+	// uses the "new" (1.16) os.ReadPath functionality
 	entries, err := os.ReadDir(startpath)
 	if err != nil {
-		return 0, err
+		abort(1, "Unrecoverable failure to read directory")
 	}
 	var total int64
 	for _, entry := range entries {
 		if !entry.IsDir() {
+			// we ignore symlinks
+			if !entry.Type().IsRegular() {
+				continue
+			}
 			// emit file data
 			name := path.Join(startpath, entry.Name())
-			info, _ := entry.Info()
+			info, err := entry.Info()
+			if err != nil {
+				abort(2, "Internal error #2")
+			}
+
 			size := info.Size()
 			unixtime := info.ModTime().Unix()
-			// mode := info.Mode() // looks like '-rwxr-xr-x'
+			// mode := info.Mode() // looks like '-rwxr-xr-x', alsoi synonymous to entry.Type().Perm()
 
 			sha, _ := GetSha256OfFile(name)
 			shab64 := b64.StdEncoding.EncodeToString(sha)
+			if len(shab64) != 44 {
+				abort(3, "Internal error #3: "+name)
+			}
 			if shab64[43:] != "=" {
-				panic(1)
+				abort(4, "Internal error #4: "+name)
 			} else {
 				shab64 = shab64[0:43]
-
 			}
 			dupes[shab64] = dupes[shab64] + 1
 
