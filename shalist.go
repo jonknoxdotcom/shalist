@@ -93,11 +93,16 @@ func WalkTree(startpath string) (int64, error) {
 			// mode := info.Mode() // looks like '-rwxr-xr-x'
 
 			sha, _ := GetSha256OfFile(name)
-			//shastr := fmt.Sprintf("%x", sha)
-			sEnc := b64.StdEncoding.EncodeToString(sha)
-			dupes[sEnc] = dupes[sEnc] + 1
+			shab64 := b64.StdEncoding.EncodeToString(sha)
+			if shab64[43:] != "=" {
+				panic(1)
+			} else {
+				shab64 = shab64[0:43]
 
-			fmt.Printf("%s%x-%04x :%s", sEnc, unixtime, size, name)
+			}
+			dupes[shab64] = dupes[shab64] + 1
+
+			fmt.Printf("%s%x%04x :%s", shab64, unixtime, size, name)
 			fmt.Println()
 		}
 		if entry.IsDir() {
