@@ -23,7 +23,7 @@ Isn't:
 
 
 ## Uses
-* Assert or validate assets present (crytographic bill of materials)
+* Assert or validate assets present (cryptographic bill of materials)
 * Use to clear 'dead' disks without fear of erasing unique data
 * Identify and remove duplicate data
 * Detect spillage of files from one tree to another
@@ -45,8 +45,11 @@ shalist generate
 shalist generate -p /volume4
 shalist generate new.jsf
 shalist update existing.jsf
-shalist validate existing.jsf
+shalist update existing.jsf -a P
+shalist update existing.jsf -a G
+shalist update existing.jsf -a K
 shalist verify existing.jsf
+shalist verify existing.jsf -h -m -s
 ```
 
 * splicing and dicing files from a signature file into smaller ones, or combining signature files
@@ -76,14 +79,17 @@ Every command name can be shortened to 3-letters (i.e. `gen`, `upd`, `big`, `dup
 
 ## Detailed command descriptions
 
-### 1. Generate
-Produces a JSF file (to STDOUT) for the current working directory.
+### 1. Generate - creating new JSF file
+Produces a JSF file (to STDOUT) for the current working directory.  Short form `gen`. Can use `--path` or `-p` to select a path other than cwd.  Can use `--out` or `-o` to specify file to write to.
 ```
 shalist generate
+shalist generate > myfiles.jsf
+shalist generate -p Desktop/
+shalist generate -o myfiles.jsf
+shalist gen -p /mnt/thumbdrive -o oldthumb.jsf
 ```
-The command `generate` can be shortened to `gen`.
 
-### 2. Update
+### 2. Update an existing JSF file
 
 ```
 shalist update file.jsf
