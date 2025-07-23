@@ -109,9 +109,11 @@ func WalkTree(startpath string) (int64, error) {
 			sha, _ := GetSha256OfFile(name)
 			shab64 := b64.StdEncoding.EncodeToString(sha)
 			if len(shab64) != 44 {
+				// can't happen
 				abort(3, "Internal error #3: "+name)
 			}
 			if shab64[43:] != "=" {
+				// can't happen
 				abort(4, "Internal error #4: "+name)
 			} else {
 				shab64 = shab64[0:43]
