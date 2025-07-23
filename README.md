@@ -63,6 +63,9 @@ shalist info file.jsf
 shalist csv file.jsf
 shalist biggest file.jsf
 shalist biggest file.jsf -n 20
+shalist find file.jsf e8faee25618bc95b5954196ba7f2a3251c04b9cc12394cf7eec545bbc2c15a4d
+shalist find file.jsf 6PruJWGLyVtZVBlrp/KjJRwEucwSOUz37sVFu8LBWk0
+shalist whereis file.jsf wanted.doc
 shalist duplicates file.jsf
 shalist duplicates file.jsf -rm
 shalist duplicates file.jsf -rm -n 10
