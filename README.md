@@ -1,7 +1,7 @@
 # shalist
 SHA256 file manager *WIP*
 
-Tool for handing assets in a verifiable manner as part of a broader security process.
+Tool for handing assets in a verifiable manner as part of a broader management strategy. Can be used to de-clutter filespaces, and - as part of a security process - be used to check for sensitive data spillage.
 
 This is the WIP version before integration with cobra.
 
@@ -80,13 +80,13 @@ Every command name can be shortened to 3-letters (i.e. `gen`, `upd`, `big`, `dup
 ## Detailed command descriptions
 
 ### 1. Generate - creating new JSF file
-Produces a JSF file (to STDOUT) for the current working directory.  Short form `gen`. Can use `--path` or `-p` to select a path other than cwd.  Can use `--out` or `-o` to specify file to write to.
+Produces a JSF file (to STDOUT) for the current working directory.  Short form `gen`. Can use `--path` or `-p` to select a path other than cwd.  Optional filename for output.
 ```
 shalist generate
 shalist generate > myfiles.jsf
+shalist generate myfiles.jsf
 shalist generate -p Desktop/
-shalist generate -o myfiles.jsf
-shalist gen -p /mnt/thumbdrive -o oldthumb.jsf
+shalist gen -p /mnt/thumbdrive oldthumb.jsf
 ```
 
 ### 2. Update an existing JSF file
